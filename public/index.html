@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Slide Sync</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .container { text-align: center; padding: 2rem; }
-    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
-    a.btn { display: inline-block; padding: 1rem 2.5rem; background: #fff; color: #0a0a0a; text-decoration: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; transition: transform 0.1s; }
-    a.btn:hover { transform: scale(1.05); }
+    body { background: #000; display: flex; align-items: center; justify-content: center; min-height: 100vh; min-height: 100dvh; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    #slide { max-width: 100vw; max-height: 100vh; max-height: 100dvh; object-fit: contain; }
+    #counter { position: fixed; bottom: 0.75rem; right: 0.75rem; color: #444; font-size: 0.75rem; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Slide Sync</h1>
-    <p>Present slides. Audience follows along in real-time.</p>
-    <a href="/present" class="btn">Start Presenting</a>
-  </div>
+  <img id="slide" src="" alt="Slide">
+  <div id="counter"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.on('slide-change', (data) => {
+      document.getElementById('slide').src = data.slide;
+      document.getElementById('counter').textContent = `${data.index + 1} / ${data.total}`;
+    });
+  </script>
 </body>
 </html>
